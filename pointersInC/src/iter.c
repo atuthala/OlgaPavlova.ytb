@@ -14,24 +14,29 @@ typedef void (*cb)(char); // тип функции для обратных вы�
 void run_callback(char);
 void run_another_callback(char);
 
-void iterator_char(metastr, cb); // итератор по метастроке
+void iterator_char(metastr *, cb); // итератор по метастроке
+
+metastr * metastr_create(char *);
 
 int main()
 {
-	// char c[] = "abcdefghi";
+	// TODO Создание строки было отдельной функцией
 	char * c = malloc(sizeof(char) * 10);
 	strcpy(c, "abcdefghi");
 
-	metastr mts = {.length = 10, .data = c}; // не совсем верно
+	// c.data - УКАЗЫВАЕТ на abcdefghi, но не содержит их
 
-	iterator_char(mts, run_another_callback);
+	// TODO Создание метастроки было отдельной функций
+	metastr* mmm = metastr_create(c);
 
-	// ??? MAGIC_RUN(@c@, !printf...!)
+	iterator_char(mmm, run_callback); printf("\n");
+	iterator_char(mmm, run_another_callback);
 
 	// + size -- задаём длину
 	// + '\0' -- это конец
 	// *** как-то зашить размер в сами данные
 
+	free(mmm);
 	free(c);
 	return 0;
 }
@@ -45,8 +50,16 @@ void run_another_callback(char h) {
 }
 
 // Итератор по метастроке (точнее, по её символам)
-void iterator_char(metastr mts, cb rcb)
+void iterator_char(metastr * mts, cb rcb)
 {
-	for (int i = 0; i < mts.length; i++)
-		rcb(mts.data[i]);
+	for (int i = 0; i < mts->length; i++)
+		rcb(mts->data[i]);
+}
+
+// Создать метастроку из обычной
+metastr* metastr_create(char* c) {
+	metastr* result = malloc(sizeof(metastr));
+	*result = (metastr){.length = strlen(c), .data=c};
+	// TODO ...и вот тут бы нам запланировать её очистку
+	return result;
 }
