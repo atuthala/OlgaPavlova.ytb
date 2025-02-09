@@ -11,3 +11,5 @@ Olga Pavlova
 - 09:20 build % vim Makefile
 -		build % make iter.run
 - 33:00 magic_run(mts, run_callback);
+- 38:41 компилиться и попробуем запустить с другим call_back
+- 47:00 перед преобразование в передачу указателя
