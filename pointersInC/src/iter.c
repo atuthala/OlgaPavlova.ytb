@@ -15,8 +15,8 @@ void magic_run(metastr, cb);
 
 int main()
 {
-	char c[10] = "abcdefghi";
-	metastr mts = {.length = 10, .data = c} // не совсем верно
+	char c[] = "abcdefghi";
+	metastr mts = {.length = 10, .data = c}; // не совсем верно
 
 	for (int i = 0; i < 10; ++i)
 	{
@@ -25,15 +25,21 @@ int main()
 
 	magic_run(mts, run_callback);
 
+	// ??? MAGIC_RUN(@c@, !printf...!)
+
+	// + size -- задаём длину
+	// + '\0' -- это конец
+	// *** как-то зашить размер в сами данные
+
 	return 0;
 }
 
 void run_callback(char h) {
-	printf("%c\n", h);
+	printf("%c ", h);
 }
 
-void magic_run(metastr mts, rcb)
+void magic_run(metastr mts, cb rcb)
 {
-	for (int i = 0; i < cb.length; i++)
+	for (int i = 0; i < mts.length; i++)
 		rcb(mts.data[i]);
 }
